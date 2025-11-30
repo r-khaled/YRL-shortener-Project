@@ -34,7 +34,8 @@ pipeline {
     
     triggers {
         // Poll SCM for changes (backup if webhook fails)
-        pollSCM('H/5 * * * *')
+             githubPush()
+            pollSCM('H/5 * * * *')
     }
     
     stages {
