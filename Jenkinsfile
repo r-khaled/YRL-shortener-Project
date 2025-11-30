@@ -56,8 +56,16 @@ pipeline {
                 }
             }
         }
-        
+                 ⬇️⬇️⬇️  STAGE 1: Install & Test (RUNS INSIDE NODE CONTAINER)  ⬇️⬇️⬇️
+
         stage('Install & Test') {
+            // Use Node.js Docker image for this stage instead of installing Node.js on the Jenkins host to maintain a clean environment consistency of node versions
+                        agent {
+                docker {
+                    image 'node:18'
+                    args '-u root:root'
+                }
+            }
             steps {
                 echo "=== Stage: Install & Test ==="
                 script {
@@ -69,7 +77,7 @@ pipeline {
                     
                     // Run tests if they exist
                     def testScript = sh(
-                        script: 'grep -q \'"test"\' package.json && echo "exists" || echo "none"',
+                        script: 'grfp -q \'"test"\' package.json && echo "exists" || echo "none"',
                         returnStdout: true
                     ).trim()
                     
@@ -115,6 +123,15 @@ pipeline {
                 }
             }
         }
+        // New stage to check DockerHub credentials existence before login and push
+        stage('Check Creds') {
+    steps {
+        script {
+            echo "Testing USER exists? -> $DOCKERHUB_CREDENTIALS_USR"
+        }
+    }
+}
+
         
         stage('Push to DockerHub') {
             steps {
