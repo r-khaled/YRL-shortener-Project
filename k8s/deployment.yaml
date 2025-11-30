@@ -30,7 +30,10 @@ spec:
 
       containers:
         - name: url-shortener
-          image: your-dockerhub-username/url-shortener:latest
+          # Image is provided by CI. Jenkins pipeline sets `IMAGE_LATEST`
+          # and `IMAGE_NAME` (tagged) using the Docker repo/tag.
+          # Keep this value in sync with `Jenkinsfile` `DOCKER_REPO`.
+          image: rogkhaled/rogkhaled-url-shortener:latest
           imagePullPolicy: Always
 
           ports:
